@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -46,6 +48,7 @@ const Card = (article) => {
   cardDiv.appendChild(authorDiv);
   authorDiv.appendChild(imgDiv);
   authorDiv.appendChild(authorSpan);
+  imgDiv.appendChild(img);
 
   // Returning Component
 
@@ -62,6 +65,46 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+
+  axios.get(`http://localhost:5000/api/articles`)
+  .then(resp => {
+
+    const selectorElem = document.querySelector(selector)
+    
+    const javaScriptArray = resp.data.articles.javascript
+    javaScriptArray.forEach( article => {
+      selectorElem.appendChild(Card(article))
+    })
+
+    const bootstrapArray = resp.data.articles.bootstrap
+    bootstrapArray.forEach( article => {
+      selectorElem.appendChild(Card(article))
+    }) 
+
+    const technologyArray = resp.data.articles.technology
+    technologyArray.forEach( article => {
+      selectorElem.appendChild(Card(article))
+    })
+
+    const jqueryArray = resp.data.articles.jquery
+    jqueryArray.forEach( article => {
+      selectorElem.appendChild(Card(article))
+    })
+
+    const nodeArray = resp.data.articles.node
+    nodeArray.forEach( article => {
+      selectorElem.appendChild(Card(article))
+    })
+
+
+  })
+  .catch( err => {
+    const errorText = document.createElement('h1')
+    errorText.textContent = 'ERROR'
+    errorText.style.color = 'red'
+    document.querySelector('body').appendChild(errorText)
+  })
+
 }
 
 export { Card, cardAppender }
